@@ -1,6 +1,9 @@
 package com.company;
 
+import com.company.API.WebserviceApi;
 import com.company.Data.Note;
+
+import static com.company.Util.MenuParams.*;
 
 public class Main {
 
@@ -28,13 +31,21 @@ public class Main {
 
     private static void getParams(String[] args) {
         for(int i=0; i < args.length; i++) {
-            switch (args[i]) {
-                case "-s":
-                    printClaimInfo(args[++i]);
-                    //Integer.parseInt(args[0]);
+            switch (args[i].toLowerCase()) {
+                case CLAIM_INFO:
+                    printClaimInfo(args[i+1]);
                     break;
-                case "-c":
+                case CREATE_NOTE_PARAM:
                     addNote(createNote(args, i));
+                    break;
+                case USERNAME_PARAM:
+                    WebserviceApi.UserName = args[i+1];
+                    break;
+                case PASSWORD_PARAM:
+                    WebserviceApi.Password = args[i+1];
+                    break;
+                case HELP_PARAM:
+                    showHelp();
                     break;
             }
         }
@@ -51,8 +62,7 @@ public class Main {
     }
 
     private static String getDescription(String claimNumber){
-
-        return "e";
+        return WebserviceApi.getInstance().tryPost("d");
     }
 
     private static String getClaimSummary(String claimNumber){
@@ -72,5 +82,18 @@ public class Main {
     private static boolean addNote(Note note){
         //TODO
         return true;
+    }
+
+    private static void showHelp() {
+        System.out.println("Commands: ");
+        System.out.println("----------- ");
+        System.out.println(CLAIM_INFO);
+        System.out.println(CREATE_NOTE_INFO);
+        System.out.println(SUBJECT_INFO);
+        System.out.println(BODY_INFO);
+        System.out.println(TOPIC_INFO);
+        System.out.println(AUTHOR_INFO);
+        System.out.println(USERNAME_INFO);
+        System.out.println(PASSWORD_INFO);
     }
 }
